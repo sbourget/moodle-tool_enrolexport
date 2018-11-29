@@ -23,5 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+$string['exportenrolments'] = 'Export Course / Category enrolments';
 $string['pluginname'] = 'Enrolment Exporter';
 $string['privacy:metadata'] = 'The Enrolment exporter plugin does not store any personal data.';

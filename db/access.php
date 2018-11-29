@@ -28,7 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
 
-    // Capability for managing exports. 
+    // Capability for managing exports.
     'tool/enrolexport:manageexports' => [
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'write',

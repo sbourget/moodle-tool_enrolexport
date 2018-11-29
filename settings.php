@@ -22,3 +22,9 @@
  * @copyright  2018 Stephen Bourget
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+defined('MOODLE_INTERNAL') || die();
+if ($hassiteconfig) {
+    $ADMIN->add('courses', new admin_externalpage('toolenrolexport',
+        get_string('exportenrolments', 'tool_enrolexport'), "$CFG->wwwroot/$CFG->admin/tool/enrolexport/index.php"));
+}

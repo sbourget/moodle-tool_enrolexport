@@ -22,3 +22,13 @@
  * @copyright  2018 Stephen Bourget
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+require(__DIR__ . '/../../../config.php');
+require_once($CFG->libdir . '/adminlib.php');
+admin_externalpage_setup('toolenrolexport');
+
+$context = context_system::instance();
+
+// Render the Page.
+echo $OUTPUT->header();
+echo $OUTPUT->footer();
