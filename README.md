@@ -13,7 +13,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details:
 
-http:www.gnu.org/copyleft/gpl.html
+http://www.gnu.org/copyleft/gpl.html
 
 Enrollment exporter for Moodle - version 3.5+
 ===============================================================================
@@ -28,6 +28,7 @@ formats including:
     * OneRoster 1.1 CSV
 
 Installation:
+
     * see http://docs.moodle.org/en/Installing_contributed_modules_or_plugins
     * This version works only with Moodle 3.5 or Later
 
