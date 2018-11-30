@@ -15,33 +15,19 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Privacy API Implementation.
+ * Version details.
  *
- * @package    tool
- * @subpackage enrolexport
+ * @package    enrolexporter_tci
  * @copyright  2018 Stephen Bourget
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace tool_enrolexport\privacy;
+require(__DIR__ . '/../../../../../config.php');
+require_once($CFG->libdir . '/adminlib.php');
+admin_externalpage_setup('toolenrolexporttci');
 
-defined('MOODLE_INTERNAL') || die();
+$context = context_system::instance();
 
-/**
- * Privacy Subsystem for tool_enrolexport implementing null_provider.
- *
- * @copyright  2018 Stephen Bourget
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-class provider implements \core_privacy\local\metadata\null_provider {
-
-    /**
-     * Get the language string identifier with the component's language
-     * file to explain why this plugin stores no data.
-     *
-     * @return  string
-     */
-    public static function get_reason() : string {
-        return 'privacy:metadata';
-    }
-}
+// Render the Page.
+echo $OUTPUT->header();
+echo $OUTPUT->footer();

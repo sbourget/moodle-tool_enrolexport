@@ -17,18 +17,17 @@
 /**
  * Privacy API Implementation.
  *
- * @package    tool
- * @subpackage enrolexport
+ * @package    enrolexporter_tci
  * @copyright  2018 Stephen Bourget
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace tool_enrolexport\privacy;
+namespace enrolexporter_tci\privacy;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Privacy Subsystem for tool_enrolexport implementing null_provider.
+ * Privacy Subsystem for enrolexporter_tci implementing null_provider.
  *
  * @copyright  2018 Stephen Bourget
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
