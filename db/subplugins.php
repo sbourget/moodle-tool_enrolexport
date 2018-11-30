@@ -25,4 +25,4 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$subplugins = array('enrolexporter'=>'admin/tool/enrolexport/format');
+$subplugins = array('enrolexporter' => 'admin/tool/enrolexport/format');

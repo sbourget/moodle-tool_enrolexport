@@ -29,4 +29,4 @@ $plugin->version   = 2018113000; // The current plugin version (Date: YYYYMMDDXX
 $plugin->requires  = 2018050800; // Requires this Moodle version.
 $plugin->component = 'tool_enrolexport'; // Full name of the plugin (used for diagnostics).
 
-$plugin->maturity  = MATURITY_ALPHA; // this version's maturity level.
+$plugin->maturity  = MATURITY_ALPHA; // This version's maturity level.

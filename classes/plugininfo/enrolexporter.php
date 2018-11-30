@@ -74,7 +74,7 @@ class enrolexporter extends base {
      * @return moodle_url
      */
     public static function get_manage_url() {
-        return new moodle_url('/admin/tool/enrolexport/manageplugins.php', array('subtype'=>'enrolexporter'));
+        return new moodle_url('/admin/tool/enrolexport/manageplugins.php', array('subtype' => 'enrolexporter'));
     }
 
     /**
@@ -84,7 +84,7 @@ class enrolexporter extends base {
     public function uninstall_cleanup() {
         global $DB;
 
-        $DB->delete_records('enrolexport_plugin_config', array('plugin'=>$this->name, 'subtype'=>'enrolexporter'));
+        $DB->delete_records('enrolexport_plugin_config', array('plugin' => $this->name, 'subtype' => 'enrolexporter'));
 
         parent::uninstall_cleanup();
     }
