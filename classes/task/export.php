@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details.
+ * Export course enrollments.
  *
  * @package    tool
  * @subpackage enrolexport
@@ -23,10 +23,36 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['exportenrolments'] = 'Export Course / Category enrolments';
-$string['exportenrolmentstask'] = 'Export Course / Category enrolments';
-$string['enableexport'] = 'Enable export';
-$string['exportpath'] = 'Export location';
-$string['exportpath_help'] = 'Specify the location of the export';
-$string['pluginname'] = 'Enrolment Exporter';
-$string['privacy:metadata'] = 'The Enrolment exporter plugin does not store any personal data.';
+namespace tool_enrolexport\task;
+
+defined('MOODLE_INTERNAL') || die();
+
+/**
+ * Export course enrollments.
+ *
+ * @package    tool
+ * @subpackage enrolexport
+ * @copyright  2018 Stephen Bourget
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class export extends \core\task\scheduled_task {
+
+    /**
+     * get_name
+     *
+     * @return string
+     */
+    public function get_name() {
+        return get_string('exportenrolmentstask', 'tool_enrolexport');
+    }
+
+    /**
+     * Executes the prediction task.
+     *
+     * @return void
+     */
+    public function execute() {
+        global $OUTPUT, $PAGE;
+
+    }
+}

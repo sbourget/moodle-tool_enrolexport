@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details.
+ * This file defines tasks performed by the tool.
  *
  * @package    tool
  * @subpackage enrolexport
@@ -23,10 +23,17 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['exportenrolments'] = 'Export Course / Category enrolments';
-$string['exportenrolmentstask'] = 'Export Course / Category enrolments';
-$string['enableexport'] = 'Enable export';
-$string['exportpath'] = 'Export location';
-$string['exportpath_help'] = 'Specify the location of the export';
-$string['pluginname'] = 'Enrolment Exporter';
-$string['privacy:metadata'] = 'The Enrolment exporter plugin does not store any personal data.';
+defined('MOODLE_INTERNAL') || die();
+
+// List of tasks.
+$tasks = array(
+    array(
+        'classname' => 'tool_enrolexport\task\export',
+        'blocking' => 0,
+        'minute' => '0',
+        'hour' => '2',
+        'day' => '*',
+        'dayofweek' => '*',
+        'month' => '*'
+    ),
+);

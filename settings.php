@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details.
+ * Plugin settings.
  *
  * @package    tool
  * @subpackage enrolexport
@@ -28,11 +28,11 @@ if ($hassiteconfig) {
     // Add link to use tool under "Courses".
     $ADMIN->add('courses', new admin_externalpage('toolenrolexport',
         get_string('exportenrolments', 'tool_enrolexport'), "$CFG->wwwroot/$CFG->admin/tool/enrolexport/index.php"));
-    
-    // Add actual export settings under plugin
+
+    // Add actual export settings under plugin.
     $settings = new admin_settingpage('tool_enrolexport', get_string('pluginname', 'tool_enrolexport'));
     $ADMIN->add('tools', $settings);
-    
+
     // Enable the exporter.
     $settings->add(new admin_setting_configcheckbox(
         'tool_enrolexport/enableexport',
@@ -40,12 +40,11 @@ if ($hassiteconfig) {
         '',
         1
     ));
-    
+
     // Specify the export location.
     $settings->add(new admin_setting_configdirectory(
-            'tool_enrolexport/exportpath', 
+            'tool_enrolexport/exportpath',
             new lang_string('exportpath',  'tool_enrolexport'),
             new lang_string('exportpath_help', 'tool_enrolexport'), $CFG->dataroot));
-    
 
 }
