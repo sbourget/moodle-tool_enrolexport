@@ -42,6 +42,7 @@ $urlparams = array();
 $baseurl = new moodle_url("/$CFG->admin/tool/enrolexport/configure.php", $urlparams);
 $PAGE->set_url($baseurl);
 $PAGE->set_context($context);
+$PAGE->set_title($strmanageexporters);
 
 if (($delete > 0) && confirm_sesskey()) {
     // Trigger event about deleting the export.
@@ -103,7 +104,7 @@ foreach ($rs as $index => $exporter) {
     $icons = $editaction . ' ' . $deleteaction;
 
     $table->add_data(array($exporter->name,
-                               $exporter->exporter,
+                               get_string('pluginname', 'enrolexporter_'.$exporter->exporter),
                                $exporter->courses,
                                $icons));
 }

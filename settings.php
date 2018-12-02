@@ -29,7 +29,7 @@ if ($hassiteconfig) {
     // First get a list of exporters with there own settings pages. If there none,
     // we use a simpler overall menu structure.
     $formats = core_component::get_plugin_list_with_file('enrolexporter', 'settings.php', false);
-    $formatbyname = array();
+    $formatsbyname = array();
     foreach ($formats as $format => $formatdir) {
         $strformatname = get_string('pluginname', 'enrolexporter_'.$format);
         $formatsbyname[$strformatname] = $format;

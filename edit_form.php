@@ -89,9 +89,17 @@ class export_edit_form extends moodleform {
         $mform->addRule('courses', null, 'required');
         $mform->addRule('courses', null, 'maxlength', 250);
 
-        $mform->addElement('text', 'exporter', get_string('exporter', 'tool_enrolexport'), array('size' => 60));
+        // Exporters:
+        $formats = core_component::get_plugin_list('enrolexporter');
+        $formatsbyname = array();
+        foreach ($formats as $format => $formatpath) {
+            $strformatname = get_string('pluginname', 'enrolexporter_'.$format);
+            $formatsbyname[$format] = $strformatname;
+        }
+
+        core_collator::ksort($formatsbyname);
+        $mform->addElement('select', 'exporter', get_string('exporter', 'tool_enrolexport'), $formatsbyname);
         $mform->setType('exporter', PARAM_TEXT);
-        $mform->addRule('exporter', null, 'maxlength', 250);
 
         // Hidden.
         $mform->addElement('hidden', 'id');
