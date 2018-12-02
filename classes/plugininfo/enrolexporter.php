@@ -25,83 +25,33 @@
 
 namespace tool_enrolexport\plugininfo;
 
-use core\plugininfo\base, core_plugin_manager, moodle_url;
+use core\plugininfo\base;
 
 defined('MOODLE_INTERNAL') || die();
 
 
 class enrolexporter extends base {
     /**
-     * Finds all enabled plugins, the result may include missing plugins.
-     * @return array|null of enabled plugins $pluginname=>$pluginname, null means unknown
+     * Yes you can uninstall these plugins if you want.
+     * @return \moodle_url
      */
-    public static function get_enabled_plugins() {
-        global $DB;
-
-        $plugins = core_plugin_manager::instance()->get_installed_plugins('enrolexporter');
-        if (!$plugins) {
-            return array();
-        }
-        $installed = array();
-        foreach ($plugins as $plugin => $version) {
-            $installed[] = 'enrolexporter_'.$plugin;
-        }
-
-        list($installed, $params) = $DB->get_in_or_equal($installed, SQL_PARAMS_NAMED);
-        $disabled = $DB->get_records_select('config_plugins', "plugin $installed AND name = 'disabled'", $params, 'plugin ASC');
-        foreach ($disabled as $conf) {
-            if (empty($conf->value)) {
-                continue;
-            }
-            list($type, $name) = explode('_', $conf->plugin, 2);
-            unset($plugins[$name]);
-        }
-
-        $enabled = array();
-        foreach ($plugins as $plugin => $version) {
-            $enabled[$plugin] = $plugin;
-        }
-
-        return $enabled;
-    }
-
     public function is_uninstall_allowed() {
         return true;
     }
 
     /**
      * Return URL used for management of plugins of this type.
-     * @return moodle_url
+     * @return \moodle_url
      */
     public static function get_manage_url() {
-        return new moodle_url('/admin/tool/enrolexport/manageplugins.php', array('subtype' => 'enrolexporter'));
+        return new \moodle_url('/admin/settings.php', array('section'=>'toolenrolexport'));
     }
 
     /**
-     * Pre-uninstall hook.
-     * @private
-     */
-    public function uninstall_cleanup() {
-        global $DB;
-
-        $DB->delete_records('enrolexport_plugin_config', array('plugin' => $this->name, 'subtype' => 'enrolexporter'));
-
-        parent::uninstall_cleanup();
-    }
-
-    public function get_settings_section_name() {
-        return $this->type . '_' . $this->name;
-    }
-
-    /**
-     * Loads plugin settings to the settings tree
+     * Include the settings.php file from sub plugins if they provide it.
+     * This is a copy of very similar implementations from various other subplugin areas.
      *
-     * This function usually includes settings.php file in plugins folder.
-     * Alternatively it can create a link to some settings page (instance of admin_externalpage)
-     *
-     * @param \part_of_admin_tree $adminroot
-     * @param string $parentnodename
-     * @param bool $hassiteconfig whether the current user has moodle/site:config capability
+     * @return \moodle_url
      */
     public function load_settings(\part_of_admin_tree $adminroot, $parentnodename, $hassiteconfig) {
         global $CFG, $USER, $DB, $OUTPUT, $PAGE; // In case settings.php wants to refer to them.
@@ -117,14 +67,21 @@ class enrolexporter extends base {
         }
 
         $section = $this->get_settings_section_name();
-
         $settings = new \admin_settingpage($section, $this->displayname, 'moodle/site:config', $this->is_enabled() === false);
+        include($this->full_path('settings.php')); // This may also set $settings to null.
 
-        if ($adminroot->fulltree) {
-            $shortsubtype = substr($this->type, strlen('assign'));
-            include($this->full_path('settings.php'));
+        if ($settings) {
+            $ADMIN->add($parentnodename, $settings);
         }
+    }
 
-        $adminroot->add($this->type . 'plugins', $settings);
+    /**
+     * Get the settings section name.
+     * It's used to get the setting links in the sub-plugins table.
+     *
+     * @return null|string the settings section name.
+     */
+    public function get_settings_section_name() {
+        return 'atto_' . $this->name . '_settings';
     }
 }

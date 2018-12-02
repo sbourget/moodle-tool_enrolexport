@@ -24,3 +24,5 @@
 
 $string['pluginname'] = 'TCI Exporter';
 $string['privacy:metadata'] = 'The TCI exporter plugin does not store any personal data.';
+$string['fieldmappings'] = 'Field Mappings';
+

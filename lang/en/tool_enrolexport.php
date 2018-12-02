@@ -29,4 +29,5 @@ $string['enableexport'] = 'Enable export';
 $string['exportpath'] = 'Export location';
 $string['exportpath_help'] = 'Specify the location of the export';
 $string['pluginname'] = 'Enrolment Exporter';
+$string['pluginnamesettings'] = 'Enrolment exporter settings';
 $string['privacy:metadata'] = 'The Enrolment exporter plugin does not store any personal data.';

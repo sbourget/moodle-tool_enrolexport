@@ -25,16 +25,22 @@
 
 defined('MOODLE_INTERNAL') || die();
 if ($hassiteconfig) {
-    // Add link to use tool under "Courses".
-    $ADMIN->add('courses', new admin_externalpage('toolenrolexport',
-        get_string('exportenrolments', 'tool_enrolexport'), "$CFG->wwwroot/$CFG->admin/tool/enrolexport/index.php"));
+    
+    // First get a list of exporters with there own settings pages. If there none,
+    // we use a simpler overall menu structure.
+    $formats = core_component::get_plugin_list_with_file('enrolexporter', 'settings.php', false);
+    $formatbyname = array();
+    foreach ($formats as $format => $formatdir) {
+        $strformatname = get_string('pluginname', 'enrolexporter_'.$format);
+        $formatsbyname[$strformatname] = $format;
+    }
+    core_collator::ksort($formatsbyname);
 
     // Add actual export settings under plugin.
-    $settings = new admin_settingpage('tool_enrolexport', get_string('pluginname', 'tool_enrolexport'));
-    $ADMIN->add('tools', $settings);
+    $mysettings = new admin_settingpage('tool_enrolexport', get_string('pluginnamesettings', 'tool_enrolexport'));
 
     // Enable the exporter.
-    $settings->add(new admin_setting_configcheckbox(
+    $mysettings->add(new admin_setting_configcheckbox(
         'tool_enrolexport/enableexport',
         new lang_string('enableexport', 'tool_enrolexport'),
         '',
@@ -42,9 +48,27 @@ if ($hassiteconfig) {
     ));
 
     // Specify the export location.
-    $settings->add(new admin_setting_configdirectory(
+    $mysettings->add(new admin_setting_configdirectory(
             'tool_enrolexport/exportpath',
             new lang_string('exportpath',  'tool_enrolexport'),
             new lang_string('exportpath_help', 'tool_enrolexport'), $CFG->dataroot));
 
+    // Generate the settings tree.
+    $ADMIN->add('tools', new admin_category('toolsettingsexportformat',
+            get_string('pluginname', 'tool_enrolexport'), $this->is_enabled() === false));
+    $ADMIN->add('toolsettingsexportformat', $mysettings);
+
+    // Add settings pages for the exporter subplugins.
+    foreach ($formatsbyname as $strformatname => $format) {
+        $formatname = $format;
+        $mysettings = new admin_settingpage('toolsettingsexportformat'.$formatname,
+                $strformatname, 'moodle/site:config', $this->is_enabled() === false);
+        if ($ADMIN->fulltree) {
+            include($CFG->dirroot . "/$CFG->admin/tool/enrolexport/format/$formatname/settings.php");
+        }
+        if (!empty($mysettings)) {
+            $ADMIN->add('toolsettingsexportformat', $mysettings);
+        }
+    }
+    
 }

@@ -24,3 +24,5 @@
 
 $string['pluginname'] = 'Oneroster 1.1 Exporter';
 $string['privacy:metadata'] = 'The Oneroster 1.1 exporter plugin does not store any personal data.';
+$string['fieldmappings'] = 'Field Mappings';
+

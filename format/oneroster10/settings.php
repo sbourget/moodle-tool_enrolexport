@@ -23,3 +23,9 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
+
+if ($ADMIN->fulltree) {
+        // Introductory explanation.
+        $mysettings->add(new admin_setting_heading('enrolexporter/oneroster10', '',
+                new lang_string('fieldmappings', 'enrolexporter_oneroster10')));
+}
