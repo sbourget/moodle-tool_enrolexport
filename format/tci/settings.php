@@ -29,10 +29,10 @@ if ($ADMIN->fulltree) {
     $mysettings->add(new admin_setting_heading('enrolexporter/tci', '',
             new lang_string('fieldmappings', 'enrolexporter_tci')));
 
-    // Teachers
-    // Email, Firstname, Lastname, password, password confirm, programcode
-    
-    // Students
-    // first_initial, last_name, username, password, password_confirm, teacher_email, program_code, class_period
+    // Teachers.
+    // Email, Firstname, Lastname, password, password confirm, programcode.
+
+    // Students.
+    // first_initial, last_name, username, password, password_confirm, teacher_email, program_code, class_period.
 
 }

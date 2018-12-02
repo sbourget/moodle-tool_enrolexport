@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 if ($hassiteconfig) {
-    
+
     // First get a list of exporters with there own settings pages. If there none,
     // we use a simpler overall menu structure.
     $formats = core_component::get_plugin_list_with_file('enrolexporter', 'settings.php', false);
@@ -61,7 +61,7 @@ if ($hassiteconfig) {
     $url = new moodle_url("/$CFG->admin/tool/enrolexport/configure.php");
     $link = '<a href="'.$url.'">'.get_string('manageexports', 'tool_enrolexport').'</a>';
     $mysettings->add(new admin_setting_heading('toolsettingsexportformat', '', $link));
-    
+
     // Add settings pages for the exporter subplugins.
     foreach ($formatsbyname as $strformatname => $format) {
         $formatname = $format;
@@ -74,5 +74,5 @@ if ($hassiteconfig) {
             $ADMIN->add('toolsettingsexportformat', $mysettings);
         }
     }
-    
+
 }

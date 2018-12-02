@@ -93,7 +93,9 @@ foreach ($rs as $index => $exporter) {
     $editurl = new moodle_url("/$CFG->admin/tool/enrolexport/edit.php", array('id' => $exporter->id));
     $editaction = $OUTPUT->action_icon($editurl, new pix_icon('t/edit', get_string('edit')));
 
-    $deleteurl = new moodle_url("/$CFG->admin/tool/enrolexport/configure.php", array('delete' => $exporter->id, 'sesskey' => sesskey()));
+    $deleteurl = new moodle_url("/$CFG->admin/tool/enrolexport/configure.php",
+                 array('delete' => $exporter->id, 'sesskey' => sesskey()));
+
     $deleteicon = new pix_icon('t/delete', get_string('delete'));
     $deleteaction = $OUTPUT->action_icon($deleteurl, $deleteicon,
                     new confirm_action(get_string('deleteexporterconfirm', 'tool_enrolexport', $exporter->name)));
