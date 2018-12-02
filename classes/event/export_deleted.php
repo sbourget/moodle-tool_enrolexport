@@ -67,6 +67,7 @@ class export_deleted extends \core\event\base {
      * @return \moodle_url
      */
     public function get_url() {
+        global $CFG;
         return new \moodle_url("/$CFG->admin/tool/enrolexport/configure.php");
     }
 
