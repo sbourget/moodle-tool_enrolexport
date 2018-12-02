@@ -23,11 +23,23 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+$string['accessdenied'] = 'Access Denied';
+$string['addexport'] = 'Add Export';
+$string['addexporter'] = 'Add Exporter';
+$string['courses'] = 'Courses';
+$string['editexport'] = 'Edit Exporters';
 $string['exportenrolments'] = 'Export Course / Category enrolments';
 $string['exportenrolmentstask'] = 'Export Course / Category enrolments';
 $string['enableexport'] = 'Enable export';
+$string['eventexportadded'] = 'Export added';
+$string['eventexportdeleted'] = 'Export deleted';
+$string['eventexportupdated'] = 'Export updated';
+$string['exporter'] = 'Exporter';
 $string['exportpath'] = 'Export location';
 $string['exportpath_help'] = 'Specify the location of the export';
+$string['manageexports'] = 'Manage Exporters';
+$string['name'] = 'Name';
 $string['pluginname'] = 'Enrolment Exporter';
 $string['pluginnamesettings'] = 'Enrolment exporter settings';
 $string['privacy:metadata'] = 'The Enrolment exporter plugin does not store any personal data.';
+$string['deleteexporterconfirm'] = 'Are you sure you want to delete the export {$a}';

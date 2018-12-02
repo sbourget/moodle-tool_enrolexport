@@ -58,6 +58,10 @@ if ($hassiteconfig) {
             get_string('pluginname', 'tool_enrolexport'), $this->is_enabled() === false));
     $ADMIN->add('toolsettingsexportformat', $mysettings);
 
+    $url = new moodle_url("/$CFG->admin/tool/enrolexport/configure.php");
+    $link = '<a href="'.$url.'">'.get_string('manageexports', 'tool_enrolexport').'</a>';
+    $mysettings->add(new admin_setting_heading('toolsettingsexportformat', '', $link));
+    
     // Add settings pages for the exporter subplugins.
     foreach ($formatsbyname as $strformatname => $format) {
         $formatname = $format;
