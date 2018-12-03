@@ -59,7 +59,7 @@ class export extends \core\task\scheduled_task {
 
         // Loop through them executing each ine in turn.
         foreach ($rs as $index => $exporter) {
-            // Get the exporter name:
+            // Get the exporter name.
             require_once("$CFG->dirroot/$CFG->admin/tool/enrolexport/format/$exporter->exporter/lib.php");
             $functionname = "enrolexporter_"."$exporter->exporter"."_export";
             $functionname($exporter);

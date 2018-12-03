@@ -28,10 +28,10 @@ function enrolexporter_tci_export($settings) {
     $courses = explode(",", $settings->courses);
     $studentlist = array();
     $teacherlist = array();
-    foreach($courses as $courseid) {
+    foreach ($courses as $courseid) {
         $context = context_course::instance($courseid);
-        $teacherlist[$courseid] =  get_enrolled_users($context, 'tool/enrolexport:includeinexportasteacher');
-        $studentlist[$courseid] =  get_enrolled_users($context, 'tool/enrolexport:includeinexportasstudent');
+        $teacherlist[$courseid] = get_enrolled_users($context, 'tool/enrolexport:includeinexportasteacher');
+        $studentlist[$courseid] = get_enrolled_users($context, 'tool/enrolexport:includeinexportasstudent');
     }
     tci_export_teachers($teacherlist);
 }
@@ -44,10 +44,9 @@ function tci_export_teachers($teacherlist) {
     global $CFG;
     require_once($CFG->libdir . '/csvlib.class.php');
 
-
-    // 1. Get enrolled users
-    // 2. Extract teachers
-    // 3. Create CSV
+    // 1. Get enrolled users.
+    // 2. Extract teachers.
+    // 3. Create CSV.
 
 }
 
@@ -55,6 +54,6 @@ function tci_export_teachers($teacherlist) {
  * This file builds and exports the teachers.
  * first_initial, last_name, username, password, password_confirm, teacher_email, program_code, class_period.
  */
-function tci_export_students() {
-    
+function tci_export_students($studentlist) {
+
 }

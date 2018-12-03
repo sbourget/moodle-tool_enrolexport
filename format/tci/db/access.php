@@ -34,7 +34,7 @@ $capabilities = array(
             'editingteacher' => CAP_ALLOW
     )],
 
-    // Used to identify students in the export
+    // Used to identify students in the export.
     'enrolexporter/tci:includeinexportasstudent' => [
         'captype' => 'read',
         'contextlevel' => CONTEXT_COURSE,

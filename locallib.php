@@ -33,9 +33,9 @@ defined('MOODLE_INTERNAL') || die();
 function tool_enrolexport_courselist($ids) {
     global $DB;
     $coursename = array();
-    $courses = explode(",",$ids);
+    $courses = explode(",", $ids);
     $results = $DB->get_records_list('course', 'id', $courses);
-    foreach($results as $result) {
+    foreach ($results as $result) {
         $coursename[] = $result->shortname;
     }
     return implode(", ", $coursename);

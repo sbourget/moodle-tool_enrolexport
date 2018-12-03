@@ -72,24 +72,25 @@ class export_edit_form extends moodleform {
      * Form definition.
      */
     public function definition() {
-        global $DB;
         $config = get_config('tool_enrolexport');
         $mform =& $this->_form;
 
         // Then show the fields about where this block appears.
         $mform->addElement('header', 'editexportheader', get_string('manageexports', 'tool_enrolexport'));
 
+        // Name.
         $mform->addElement('text', 'name', get_string('name', 'tool_enrolexport'), array('size' => 60));
         $mform->setType('name', PARAM_TEXT);
         $mform->addRule('name', null, 'required');
         $mform->addRule('name', null, 'maxlength', 250);
 
-        $options = array('multiple' => true, 'includefrontpage' => true);                                                           
+        // Courses.
+        $options = array('multiple' => true, 'includefrontpage' => true);
         $mform->addElement('course', 'courses', get_string('course'), $options);
         $mform->setType('courses', PARAM_TEXT);
         $mform->addRule('courses', null, 'required');
 
-        // Exporters:
+        // Exporters.
         $formats = core_component::get_plugin_list('enrolexporter');
         $formatsbyname = array();
         foreach ($formats as $format => $formatpath) {
