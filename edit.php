@@ -57,8 +57,8 @@ if ($mform->is_cancelled()) {
     redirect($returnurl);
 
 } else if ($data = $mform->get_data()) {
-
     if ($data->id == 0) {
+        $data->courses = implode(",", $data->courses);
         $id = $DB->insert_record('tool_enrolexport', $data);
         // Trigger event about adding the export.
         $params = array('context' => $context, 'objectid' => $id);
@@ -66,6 +66,7 @@ if ($mform->is_cancelled()) {
         $event->add_record_snapshot('tool_enrolexport', $data);
         $event->trigger();
     } else if (isset($data->id) && (int)$data->id > 0) {
+        $data->courses = implode(",", $data->courses);
         $id = $DB->update_record('tool_enrolexport', $data);
         // Trigger event about updating the export.
         $params = array('context' => $context, 'objectid' => $data->id);

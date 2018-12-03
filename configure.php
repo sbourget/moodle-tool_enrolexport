@@ -25,6 +25,7 @@
 
 require(__DIR__ . '/../../../config.php');
 require_once($CFG->libdir . '/tablelib.php');
+require_once('locallib.php');
 global $DB;
 
 $delete = optional_param('delete', 0, PARAM_INT);
@@ -91,6 +92,7 @@ $table->setup();
 
 foreach ($rs as $index => $exporter) {
 
+    // Generate Icons.
     $editurl = new moodle_url("/$CFG->admin/tool/enrolexport/edit.php", array('id' => $exporter->id));
     $editaction = $OUTPUT->action_icon($editurl, new pix_icon('t/edit', get_string('edit')));
 
@@ -105,7 +107,7 @@ foreach ($rs as $index => $exporter) {
 
     $table->add_data(array($exporter->name,
                                get_string('pluginname', 'enrolexporter_'.$exporter->exporter),
-                               $exporter->courses,
+                               tool_enrolexport_courselist($exporter->courses),
                                $icons));
 }
 

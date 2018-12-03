@@ -84,10 +84,10 @@ class export_edit_form extends moodleform {
         $mform->addRule('name', null, 'required');
         $mform->addRule('name', null, 'maxlength', 250);
 
-        $mform->addElement('text', 'courses', get_string('courses', 'tool_enrolexport'), array('size' => 60));
+        $options = array('multiple' => true, 'includefrontpage' => true);                                                           
+        $mform->addElement('course', 'courses', get_string('course'), $options);
         $mform->setType('courses', PARAM_TEXT);
         $mform->addRule('courses', null, 'required');
-        $mform->addRule('courses', null, 'maxlength', 250);
 
         // Exporters:
         $formats = core_component::get_plugin_list('enrolexporter');

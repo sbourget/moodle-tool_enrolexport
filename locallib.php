@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details.
+ * Helper functions for plug-in.
  *
  * @package    tool
  * @subpackage enrolexport
@@ -24,3 +24,19 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
+
+/**
+ * Converts a string of course ids to shortnames.
+ * @param string $ids
+ * @return string
+ */
+function tool_enrolexport_courselist($ids) {
+    global $DB;
+    $coursename = array();
+    $courses = explode(",",$ids);
+    $results = $DB->get_records_list('course', 'id', $courses);
+    foreach($results as $result) {
+        $coursename[] = $result->shortname;
+    }
+    return implode(", ", $coursename);
+}
