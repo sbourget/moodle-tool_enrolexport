@@ -15,17 +15,15 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details.
+ * library of functions.
  *
- * @package    enrolexporter_tci
+ * @package    enrolexporter_oneroster10
  * @copyright  2018 Stephen Bourget
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2018120100; // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2018050800; // Requires this Moodle version.
-$plugin->component = 'enrolexporter_tci'; // Full name of the plugin (used for diagnostics).
+function enrolexporter_oneroster10_export($settings) {
 
-$plugin->maturity  = MATURITY_ALPHA; // This version's maturity level.
+}

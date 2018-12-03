@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details.
+ * Access control.
  *
  * @package    enrolexporter_tci
  * @copyright  2018 Stephen Bourget
@@ -24,8 +24,22 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2018120100; // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2018050800; // Requires this Moodle version.
-$plugin->component = 'enrolexporter_tci'; // Full name of the plugin (used for diagnostics).
+$capabilities = array(
 
-$plugin->maturity  = MATURITY_ALPHA; // This version's maturity level.
+    // Used to identify teachers in the export.
+    'enrolexporter/tci:includeinexportasteacher' => [
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW
+    )],
+
+    // Used to identify students in the export
+    'enrolexporter/tci:includeinexportasstudent' => [
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+            'student' => CAP_ALLOW
+    )],
+
+);
