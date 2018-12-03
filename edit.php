@@ -42,6 +42,7 @@ if ($id > 0) {
 
     $mform = new export_edit_form($PAGE->url, false, $id);
     $record = $DB->get_record('tool_enrolexport', array('id' => $id), '*', MUST_EXIST);
+    $record->courses = explode(",", $record->courses);
     $mform->set_data($record);
 } else {
     // Adding a new record.
