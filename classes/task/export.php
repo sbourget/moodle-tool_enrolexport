@@ -52,7 +52,18 @@ class export extends \core\task\scheduled_task {
      * @return void
      */
     public function execute() {
-        global $OUTPUT, $PAGE;
+        global $DB, $CFG;
+
+        // Get list of defined exports.
+        $rs = $DB->get_records('tool_enrolexport', null, 'name');
+
+        // Loop through them executing each ine in turn.
+        foreach ($rs as $index => $exporter) {
+            // Get the exporter name:
+            require_once("$CFG->dirroot/$CFG->admin/tool/enrolexport/format/$exporter->exporter/lib.php");
+            $functionname = "enrolexporter_"."$exporter->exporter"."_export";
+            $functionname($exporter);
+        }
 
     }
 }
