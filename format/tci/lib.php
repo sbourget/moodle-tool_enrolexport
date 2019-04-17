@@ -22,7 +22,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+
 defined('MOODLE_INTERNAL') || die();
+
+require_once($CFG->libdir .'/spout/src/Spout/Autoloader/autoload.php');
+
+use Box\Spout\Writer\WriterFactory;
+use Box\Spout\Common\Type;
 
 function enrolexporter_tci_export($settings) {
     $courses = explode(",", $settings->courses);
@@ -30,10 +36,11 @@ function enrolexporter_tci_export($settings) {
     $teacherlist = array();
     foreach ($courses as $courseid) {
         $context = context_course::instance($courseid);
-        $teacherlist[$courseid] = get_enrolled_users($context, 'tool/enrolexport:includeinexportasteacher');
-        $studentlist[$courseid] = get_enrolled_users($context, 'tool/enrolexport:includeinexportasstudent');
+        $teacherlist[$courseid] = get_enrolled_users($context, 'enrolexporter/tci:includeinexportasteacher');
+        $studentlist[$courseid] = get_enrolled_users($context, 'enrolexporter/tci:includeinexportasstudent');
     }
-    tci_export_teachers($teacherlist);
+    tci_export_teachers($teacherlist);// test
+    tci_export_students($studentlist);
 }
 
 /**
@@ -41,13 +48,26 @@ function enrolexporter_tci_export($settings) {
  * The teacher file needs: Email, Firstname, Lastname, password, password confirm, programcode.
  */
 function tci_export_teachers($teacherlist) {
-    global $CFG;
-    require_once($CFG->libdir . '/csvlib.class.php');
-
     // 1. Get enrolled users.
     // 2. Extract teachers.
     // 3. Create CSV.
+    $writer = WriterFactory::create(Type::CSV);
+    $path = get_config('tool_enrolexport', 'exportpath') . '/tci';
 
+    if (!file_exists($path)) {
+        mkdir($path);
+    }
+
+    $writer->openToFile($path . '/teachers.csv'); // write data to a file or to a PHP stream
+
+    foreach ($teacherlist as $teachers) {
+        foreach ($teachers as $teacher) {
+            // TODO: Program code is currently -1 as a placeholder
+            $writer->addRow([$teacher->email, $teacher->firstname, $teacher->lastname, $teacher->password, $teacher->confirmed, -1]); // add a row at a time
+        }
+    }
+
+    $writer->close();
 }
 
 /**

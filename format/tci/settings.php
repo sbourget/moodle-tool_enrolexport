@@ -35,4 +35,7 @@ if ($ADMIN->fulltree) {
     // Students.
     // first_initial, last_name, username, password, password_confirm, teacher_email, program_code, class_period.
 
+    $url = new moodle_url("/$CFG->admin/tool/enrolexport/format/tci/configure.php");
+    $link = '<a href="'.$url.'">'.get_string('fieldmappings', 'enrolexporter_tci').'</a>';
+    $mysettings->add(new admin_setting_heading('toolsettingsfieldmappings', '', $link));
 }

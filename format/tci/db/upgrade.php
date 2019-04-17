@@ -13,19 +13,25 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
- * Version details.
+ * Upgrade code for install
  *
- * @package    enrolexporter_tci
- * @copyright  2018 Stephen Bourget
+ * @package    block_links
+ * @copyright  2019 Adam Yarris
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die();
+/**
+ * upgrade this block instance - this function could be skipped but it will be needed later
+ * @param int $oldversion The old version of the links block
+ * @return bool
+ */
+function xmldb_enrolexporter_tci_upgrade($oldversion=0)
+{
+    global $CFG, $DB;
+    $dbman = $DB->get_manager();
 
-$plugin->version   = 2019041500; // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2018050800; // Requires this Moodle version.
-$plugin->component = 'enrolexporter_tci'; // Full name of the plugin (used for diagnostics).
+    // Finally, return result.
+    return true;
+}
 
-$plugin->maturity  = MATURITY_ALPHA; // This version's maturity level.
