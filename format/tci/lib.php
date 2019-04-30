@@ -31,28 +31,41 @@ use Box\Spout\Writer\WriterFactory;
 use Box\Spout\Common\Type;
 
 function enrolexporter_tci_export($settings) {
+    global $DB;
     $courses = explode(",", $settings->courses);
     $studentlist = array();
     $teacherlist = array();
+    $coursemap = array();
+
+    $record = $DB->get_records_select('enrolexporter_tci', false);
+
+    foreach ($record as $programcode => $entry) {
+        $exploded = explode(',', $record[$programcode]->course);
+        foreach ($exploded as $mappedcode) {
+            $coursemap[$mappedcode] = $programcode;
+        }
+    }
+
     foreach ($courses as $courseid) {
         $context = context_course::instance($courseid);
         $teacherlist[$courseid] = get_enrolled_users($context, 'enrolexporter/tci:includeinexportasteacher');
         $studentlist[$courseid] = get_enrolled_users($context, 'enrolexporter/tci:includeinexportasstudent');
     }
-    tci_export_teachers($teacherlist);// test
-    tci_export_students($studentlist);
+
+    tci_export_teachers($settings->name, $teacherlist, $coursemap);
+    tci_export_students($settings->name, $studentlist, $teacherlist, $coursemap);
 }
 
 /**
  * This file builds and exports the teachers.
  * The teacher file needs: Email, Firstname, Lastname, password, password confirm, programcode.
  */
-function tci_export_teachers($teacherlist) {
+function tci_export_teachers($exportname, $teacherlist, $coursemap) {
     // 1. Get enrolled users.
     // 2. Extract teachers.
     // 3. Create CSV.
     $writer = WriterFactory::create(Type::CSV);
-    $path = get_config('tool_enrolexport', 'exportpath') . '/tci';
+    $path = get_config('tool_enrolexport', 'exportpath') . '/tci/' . clean_param($exportname, PARAM_PATH);
 
     if (!file_exists($path)) {
         mkdir($path);
@@ -60,10 +73,10 @@ function tci_export_teachers($teacherlist) {
 
     $writer->openToFile($path . '/teachers.csv'); // write data to a file or to a PHP stream
 
-    foreach ($teacherlist as $teachers) {
+    foreach ($teacherlist as $courseid => $teachers) {
+        $programcode = isset($coursemap[$courseid]) ? $coursemap[$courseid] : '';
         foreach ($teachers as $teacher) {
-            // TODO: Program code is currently -1 as a placeholder
-            $writer->addRow([$teacher->email, $teacher->firstname, $teacher->lastname, $teacher->password, $teacher->confirmed, -1]); // add a row at a time
+            $writer->addRow([$teacher->email, $teacher->firstname, $teacher->lastname, $teacher->password, $teacher->confirmed, $programcode]);
         }
     }
 
@@ -74,6 +87,35 @@ function tci_export_teachers($teacherlist) {
  * This file builds and exports the teachers.
  * first_initial, last_name, username, password, password_confirm, teacher_email, program_code, class_period.
  */
-function tci_export_students($studentlist) {
+function tci_export_students($exportname, $studentlist, $teacherlist, $coursemap) {
+    // 1. Get enrolled users.
+    // 2. Extract students.
+    // 3. Create CSV.
+    $writer = WriterFactory::create(Type::CSV);
+    $path = get_config('tool_enrolexport', 'exportpath') . '/tci/' . clean_param($exportname, PARAM_PATH);
 
+    if (!file_exists($path)) {
+        mkdir($path);
+    }
+
+    $writer->openToFile($path . '/students.csv'); // write data to a file or to a PHP stream
+
+    $classperiod = 0;
+
+    foreach ($studentlist as $courseid => $students) {
+        $teachervalues = array_values($teacherlist[$courseid]);
+        if (sizeof($teacherlist[$courseid]) == 0) {
+            // TODO: Add logging course skipped
+            continue;
+        }
+
+        $firstteacher = $teachervalues[0];
+
+        $programcode = isset($coursemap[$courseid]) ? $coursemap[$courseid] : '';
+         foreach ($students as $student) {
+             $writer->addRow([$student->firstname[0], $student->lastname, $student->username, $student->password, $student->confirmed, $firstteacher->email, $programcode, $classperiod]);
+         }
+    }
+
+    $writer->close();
 }
