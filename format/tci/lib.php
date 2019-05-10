@@ -30,6 +30,8 @@ require_once($CFG->libdir .'/spout/src/Spout/Autoloader/autoload.php');
 use Box\Spout\Writer\WriterFactory;
 use Box\Spout\Common\Type;
 
+$passLength = 12;
+
 function enrolexporter_tci_export($settings) {
     global $DB;
     $courses = explode(",", $settings->courses);
@@ -39,10 +41,11 @@ function enrolexporter_tci_export($settings) {
 
     $record = $DB->get_records_select('enrolexporter_tci', false);
 
-    foreach ($record as $programcode => $entry) {
-        $exploded = explode(',', $record[$programcode]->course);
+    foreach ($record as $id => $entry) {
+        $exploded = explode(',', $record[$id]->course);
         foreach ($exploded as $mappedcode) {
-            $coursemap[$mappedcode] = $programcode;
+            $coursemap[$mappedcode] = $record[$id]->programcode; // For the actual 'programcode' field
+            // $coursemap[$mappedcode] = $id; // For the ID of the field map (Probably irrelevant)
         }
     }
 
@@ -76,7 +79,39 @@ function tci_export_teachers($exportname, $teacherlist, $coursemap) {
     foreach ($teacherlist as $courseid => $teachers) {
         $programcode = isset($coursemap[$courseid]) ? $coursemap[$courseid] : '';
         foreach ($teachers as $teacher) {
-            $writer->addRow([$teacher->email, $teacher->firstname, $teacher->lastname, $teacher->password, $teacher->confirmed, $programcode]);
+            var_dump($teacher);
+            $email = array(
+                'email' => $teacher->email,
+                'icq' => $teacher->icq,
+                'skype' => $teacher->skype,
+                'yahoo' => $teacher->yahoo,
+                'aim' => $teacher->aim,
+                'msn' => $teacher->msn
+            )[get_config('enrolexporter_tci', 'teacher_email')];
+
+            $firstname = array(
+                'firstname' => $teacher->firstname,
+                'phonetic' => $teacher->firstnamephonetic,
+                'alternate' => $teacher->alternatename,
+                'initial' => $teacher->firstname[0]
+            )[get_config('enrolexporter_tci', 'teacher_firstname')];
+
+            $lastname = array(
+                'lastname' => $teacher->lastname,
+                'phonetic' => $teacher->lastnamephonetic,
+                'initial' => $teacher->lastname[0],
+            )[get_config('enrolexporter_tci', 'teacher_lastname')];
+
+
+            $password = array(
+                'random' => generatePassword(),
+                'id_username' => $teacher->idnumber + $teacher->username,
+                'id_email' => $teacher->idnumber + $teacher->email,
+                'id_firstname' => $teacher->idnumber + $teacher->firstname,
+                'id_lastname' => $teacher->idnumber + $teacher->lastname
+            )[get_config('enrolexporter_tci', 'teacher_password')];
+
+            $writer->addRow([$email, $firstname, $lastname, $password, $teacher->confirmed, $programcode]);
         }
     }
 
@@ -113,9 +148,41 @@ function tci_export_students($exportname, $studentlist, $teacherlist, $coursemap
 
         $programcode = isset($coursemap[$courseid]) ? $coursemap[$courseid] : '';
          foreach ($students as $student) {
-             $writer->addRow([$student->firstname[0], $student->lastname, $student->username, $student->password, $student->confirmed, $firstteacher->email, $programcode, $classperiod]);
+             $firstname = array(
+                 'firstname' => $student->firstname,
+                 'phonetic' => $student->firstnamephonetic,
+                 'alternate' => $student->alternatename,
+                 'initial' => $student->firstname[0],
+             )[get_config('enrolexporter_tci', 'student_firstname')];
+
+             $lastname = array(
+                 'lastname' => $student->lastname,
+                 'phonetic' => $student->lastnamephonetic,
+                 'initial' => $student->lastname[0]
+             )[get_config('enrolexporter_tci', 'student_lastname')];
+
+             $username = array(
+                 'username' => $student->username,
+                 'email' => $student->email,
+             )[get_config('enrolexporter_tci', 'student_username')];
+
+             $password = array(
+                 'random' => generatePassword(),
+                 'id_username' => $student->idnumber + $student->username,
+                 'id_email' => $student->idnumber + $student->email,
+                 'id_firstname' => $student->idnumber + $student->firstname,
+                 'id_lastname' => $student->idnumber + $student->lastname
+             )[get_config('enrolexporter_tci', 'student_password')];
+
+             $writer->addRow([$firstname, $lastname, $username, $password, $password, $firstteacher->email, $programcode, $classperiod]);
          }
     }
 
     $writer->close();
+}
+
+function generatePassword() {
+    global $passLength;
+    echo '<h1>' . $passLength . '</h1>';
+    return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($passLength/strlen($x)) )),1,$passLength);
 }
