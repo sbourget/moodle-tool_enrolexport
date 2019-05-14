@@ -17,7 +17,7 @@
 /**
  * library of functions.
  *
- * @package    enrolexporter_tci
+ * @package    tool_enrolexporter_tci
  * @copyright  2018 Stephen Bourget
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,12 +25,12 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->libdir .'/spout/src/Spout/Autoloader/autoload.php');
+require_once($CFG->libdir . '/spout/src/Spout/Autoloader/autoload.php');
 
 use Box\Spout\Writer\WriterFactory;
 use Box\Spout\Common\Type;
 
-$passLength = 12;
+$passlength = 12;
 
 function enrolexporter_tci_export($settings) {
     global $DB;
@@ -44,8 +44,7 @@ function enrolexporter_tci_export($settings) {
     foreach ($record as $id => $entry) {
         $exploded = explode(',', $record[$id]->course);
         foreach ($exploded as $mappedcode) {
-            $coursemap[$mappedcode] = $record[$id]->programcode; // For the actual 'programcode' field
-            // $coursemap[$mappedcode] = $id; // For the ID of the field map (Probably irrelevant)
+            $coursemap[$mappedcode] = $record[$id]->programcode; // For the actual 'programcode' field.
         }
     }
 
@@ -74,7 +73,7 @@ function tci_export_teachers($exportname, $teacherlist, $coursemap) {
         mkdir($path);
     }
 
-    $writer->openToFile($path . '/teachers.csv'); // write data to a file or to a PHP stream
+    $writer->openToFile($path . '/teachers.csv');
 
     foreach ($teacherlist as $courseid => $teachers) {
         $programcode = isset($coursemap[$courseid]) ? $coursemap[$courseid] : '';
@@ -101,9 +100,8 @@ function tci_export_teachers($exportname, $teacherlist, $coursemap) {
                 'initial' => $teacher->lastname[0],
             )[get_config('enrolexporter_tci', 'teacher_lastname')];
 
-
             $password = array(
-                'random' => generatePassword(),
+                'random' => generate_password(),
                 'id_username' => $teacher->idnumber + $teacher->username,
                 'id_email' => $teacher->idnumber + $teacher->email,
                 'id_firstname' => $teacher->idnumber + $teacher->firstname,
@@ -132,55 +130,57 @@ function tci_export_students($exportname, $studentlist, $teacherlist, $coursemap
         mkdir($path);
     }
 
-    $writer->openToFile($path . '/students.csv'); // write data to a file or to a PHP stream
+    $writer->openToFile($path . '/students.csv');
 
     $classperiod = 0;
 
     foreach ($studentlist as $courseid => $students) {
         $teachervalues = array_values($teacherlist[$courseid]);
         if (sizeof($teacherlist[$courseid]) == 0) {
-            // TODO: Add logging course skipped
+            // TODO: Add logging course skipped.
             continue;
         }
 
         $firstteacher = $teachervalues[0];
 
         $programcode = isset($coursemap[$courseid]) ? $coursemap[$courseid] : '';
-         foreach ($students as $student) {
-             $firstname = array(
-                 'firstname' => $student->firstname,
-                 'phonetic' => $student->firstnamephonetic,
-                 'alternate' => $student->alternatename,
-                 'initial' => $student->firstname[0],
-             )[get_config('enrolexporter_tci', 'student_firstname')];
+        foreach ($students as $student) {
+            $firstname = array(
+                'firstname' => $student->firstname,
+                'phonetic' => $student->firstnamephonetic,
+                'alternate' => $student->alternatename,
+                'initial' => $student->firstname[0],
+            )[get_config('enrolexporter_tci', 'student_firstname')];
 
-             $lastname = array(
-                 'lastname' => $student->lastname,
-                 'phonetic' => $student->lastnamephonetic,
-                 'initial' => $student->lastname[0]
-             )[get_config('enrolexporter_tci', 'student_lastname')];
+            $lastname = array(
+                'lastname' => $student->lastname,
+                'phonetic' => $student->lastnamephonetic,
+                'initial' => $student->lastname[0]
+            )[get_config('enrolexporter_tci', 'student_lastname')];
 
-             $username = array(
-                 'username' => $student->username,
-                 'email' => $student->email,
-             )[get_config('enrolexporter_tci', 'student_username')];
+            $username = array(
+                'username' => $student->username,
+                'email' => $student->email,
+            )[get_config('enrolexporter_tci', 'student_username')];
 
-             $password = array(
-                 'random' => generatePassword(),
-                 'id_username' => $student->idnumber + $student->username,
-                 'id_email' => $student->idnumber + $student->email,
-                 'id_firstname' => $student->idnumber + $student->firstname,
-                 'id_lastname' => $student->idnumber + $student->lastname
-             )[get_config('enrolexporter_tci', 'student_password')];
+            $password = array(
+                'random' => generate_password(),
+                'id_username' => $student->idnumber + $student->username,
+                'id_email' => $student->idnumber + $student->email,
+                'id_firstname' => $student->idnumber + $student->firstname,
+                'id_lastname' => $student->idnumber + $student->lastname
+            )[get_config('enrolexporter_tci', 'student_password')];
 
-             $writer->addRow([$firstname, $lastname, $username, $password, $password, $firstteacher->email, $programcode, $classperiod]);
-         }
+            $writer->addRow([$firstname, $lastname, $username, $password,
+                $password, $firstteacher->email, $programcode, $classperiod]);
+        }
     }
 
     $writer->close();
 }
 
-function generatePassword() {
-    global $passLength;
-    return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($passLength/strlen($x)) )),1,$passLength);
+function generate_password() {
+    global $passlength;
+    return substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+        ceil($passlength / strlen($x)))), 1, $passlength);
 }

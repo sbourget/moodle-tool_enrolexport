@@ -18,7 +18,7 @@
 /**
  * This block generates a simple list of exports based on the users profile.
  *
- * @package   tool_enrolexport
+ * @package   tool_enrolexporter_tci
  * @copyright 2019 Adam Yarris
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -45,7 +45,7 @@ class mapping_edit_form extends moodleform {
      * The program code that we don't set.
      * @var int
      */
-    protected $program_code = '';
+    protected $programcode = '';
 
     /**
      * A comma-separated list of course to be attached to the program code?
@@ -67,7 +67,6 @@ class mapping_edit_form extends moodleform {
      * Form definition.
      */
     public function definition() {
-        $config = get_config('tool_enrolexport');
         $mform =& $this->_form;
 
         // Then show the fields about where this block appears.
@@ -84,21 +83,6 @@ class mapping_edit_form extends moodleform {
         $mform->addElement('course', 'course', get_string('course'), $options);
         $mform->setType('course', PARAM_TEXT);
         $mform->addRule('course', null, 'required');
-
-
-
-        /*
-        // Exporters.
-        $formats = core_component::get_plugin_list('enrolexporter');
-        $formatsbyname = array();
-        foreach ($formats as $format => $formatpath) {
-            $strformatname = get_string('pluginname', 'enrolexporter_'.$format);
-            $formatsbyname[$format] = $strformatname;
-        }
-        core_collator::ksort($formatsbyname);
-        $mform->addElement('select', 'exporter', get_string('exporter', 'tool_enrolexport'), $formatsbyname);
-        $mform->setType('exporter', PARAM_TEXT);
-        */
 
         // Hidden.
         $mform->addElement('hidden', 'id');

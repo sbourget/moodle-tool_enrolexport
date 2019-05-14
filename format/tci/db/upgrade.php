@@ -16,7 +16,7 @@
 /**
  * Upgrade code for install
  *
- * @package    block_links
+ * @package    tool_enrolexporter_tci
  * @copyright  2019 Adam Yarris
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,11 +26,7 @@ defined('MOODLE_INTERNAL') || die();
  * @param int $oldversion The old version of the links block
  * @return bool
  */
-function xmldb_enrolexporter_tci_upgrade($oldversion=0)
-{
-    global $CFG, $DB;
-    $dbman = $DB->get_manager();
-
+function xmldb_enrolexporter_tci_upgrade($oldversion=0) {
     // Finally, return result.
     return true;
 }

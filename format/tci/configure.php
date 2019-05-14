@@ -17,8 +17,7 @@
 /**
  * Version details.
  *
- * @package    tool
- * @subpackage enrolexport
+ * @package    tool_enrolexporter_tci
  * @copyright  2019 Adam Yarris
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

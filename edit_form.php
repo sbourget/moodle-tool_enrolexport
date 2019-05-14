@@ -72,7 +72,6 @@ class export_edit_form extends moodleform {
      * Form definition.
      */
     public function definition() {
-        $config = get_config('tool_enrolexport');
         $mform =& $this->_form;
 
         // Then show the fields about where this block appears.

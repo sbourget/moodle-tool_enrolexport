@@ -17,7 +17,7 @@
 /**
  * Management of the exports.
  *
- * @package   tool_enrolexport
+ * @package   tool_enrolexporter_tci
  * @copyright 2019 Adam Yarris
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -63,12 +63,12 @@ if ($mform->is_cancelled()) {
         $data->course = implode(",", $data->course);
         $id = $DB->insert_record('enrolexporter_tci', $data);
 
-        // TODO: Events
+        // TODO: Events.
     } else if (isset($data->id) && (int)$data->id > 0) {
         $data->course = implode(",", $data->course);
         $id = $DB->update_record('enrolexporter_tci', $data);
 
-        // TODO: Events
+        // TODO: Events.
     }
 
     redirect($returnurl);
