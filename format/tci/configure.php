@@ -32,10 +32,10 @@ $delete = optional_param('delete', 0, PARAM_INT);
 
 require_login();
 $context = context_system::instance();
-// TODO: Permissions?
-//if (!has_capability('tool/enrolexport:manageexports', $context)) {
-//    print_error('accessdenied', 'tool_enrolexport');
-//}
+// TODO: Change permissions?
+if (!has_capability('tool/enrolexport:manageexports', $context)) {
+    print_error('accessdenied', 'tool_enrolexport');
+}
 
 $strmanageexporters = get_string('fieldmappings', 'enrolexporter_tci');
 

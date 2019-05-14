@@ -28,10 +28,10 @@ $id = optional_param('id', 0, PARAM_INT); // 0 means create new entry.
 
 require_login();
 $context = context_system::instance();
-// TODO: Permissions?
-//if (!has_capability('tool/enrolexport:manageexports', $context)) {
-//    print_error('accessdenied', 'tool_enrolexport');
-//}
+// TODO: Change permissions?
+if (!has_capability('tool/enrolexport:manageexports', $context)) {
+    print_error('accessdenied', 'tool_enrolexport');
+}
 
 $PAGE->set_context($context);
 $returnurl = new moodle_url("/$CFG->admin/tool/enrolexport/format/tci/configure.php", array());
@@ -60,7 +60,6 @@ if ($mform->is_cancelled()) {
 
 } else if ($data = $mform->get_data()) {
     if ($data->id == 0) {
-        var_dump($data->course);
         $data->course = implode(",", $data->course);
         $id = $DB->insert_record('enrolexporter_tci', $data);
 

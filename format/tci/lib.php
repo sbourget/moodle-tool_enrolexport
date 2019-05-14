@@ -79,7 +79,6 @@ function tci_export_teachers($exportname, $teacherlist, $coursemap) {
     foreach ($teacherlist as $courseid => $teachers) {
         $programcode = isset($coursemap[$courseid]) ? $coursemap[$courseid] : '';
         foreach ($teachers as $teacher) {
-            var_dump($teacher);
             $email = array(
                 'email' => $teacher->email,
                 'icq' => $teacher->icq,
@@ -183,6 +182,5 @@ function tci_export_students($exportname, $studentlist, $teacherlist, $coursemap
 
 function generatePassword() {
     global $passLength;
-    echo '<h1>' . $passLength . '</h1>';
     return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($passLength/strlen($x)) )),1,$passLength);
 }
