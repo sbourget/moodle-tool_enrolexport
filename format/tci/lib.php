@@ -17,7 +17,7 @@
 /**
  * library of functions.
  *
- * @package    tool_enrolexporter_tci
+ * @package    tool_enrolexport_tci
  * @copyright  2018 Stephen Bourget
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

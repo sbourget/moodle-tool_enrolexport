@@ -17,7 +17,7 @@
 /**
  * This file defines tasks performed by the tool.
  *
- * @package    tool_enrolexporter
+ * @package    tool_enrolexport
  * @copyright  2018 Stephen Bourget
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
