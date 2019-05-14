@@ -46,7 +46,7 @@ $PAGE->set_context($context);
 $PAGE->set_title($strmanageexporters);
 
 if (($delete > 0) && confirm_sesskey()) {
-    // TODO: Events
+    // TODO: Events.
 
     $DB->delete_records('enrolexporter_tci', array('id' => $delete));
 }

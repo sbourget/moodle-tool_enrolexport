@@ -78,7 +78,7 @@ class mapping_edit_form extends moodleform {
         $mform->addRule('programcode', null, 'required');
         $mform->addRule('programcode', null, 'maxlength', 64);
 
-        // course.
+        // Course.
         $options = array('multiple' => true, 'includefrontpage' => true);
         $mform->addElement('course', 'course', get_string('course'), $options);
         $mform->setType('course', PARAM_TEXT);
