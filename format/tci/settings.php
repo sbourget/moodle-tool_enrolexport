@@ -17,7 +17,7 @@
 /**
  * Version details.
  *
- * @package    enrolexport_tci
+ * @package    enrolexporter_tci
  * @copyright  2018 Stephen Bourget
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
