@@ -18,7 +18,7 @@
 /**
  * This block generates a simple list of exports based on the users profile.
  *
- * @package   tool_enrolexport_tci
+ * @package   enrolexport_tci
  * @copyright 2019 Adam Yarris
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

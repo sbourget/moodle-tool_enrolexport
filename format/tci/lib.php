@@ -17,7 +17,7 @@
 /**
  * library of functions.
  *
- * @package    tool_enrolexport_tci
+ * @package    enrolexport_tci
  * @copyright  2018 Stephen Bourget
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -32,6 +32,11 @@ use Box\Spout\Common\Type;
 
 $passlength = 12;
 
+/**
+ * Exports the students.csv and teachers.csv files with course data.
+ *
+ * @param stdClass $settings The export data from the database.
+ */
 function enrolexporter_tci_export($settings) {
     global $DB;
     $courses = explode(",", $settings->courses);
@@ -61,6 +66,10 @@ function enrolexporter_tci_export($settings) {
 /**
  * This file builds and exports the teachers.
  * The teacher file needs: Email, Firstname, Lastname, password, password confirm, programcode.
+ *
+ * @param string $exportname The name of the export
+ * @param array $teacherlist The list of teachers and their courses
+ * @param array $coursemap A map of courses and their mapped codes
  */
 function tci_export_teachers($exportname, $teacherlist, $coursemap) {
     // 1. Get enrolled users.
@@ -118,6 +127,11 @@ function tci_export_teachers($exportname, $teacherlist, $coursemap) {
 /**
  * This file builds and exports the teachers.
  * first_initial, last_name, username, password, password_confirm, teacher_email, program_code, class_period.
+ *
+ * @param string $exportname The name of the export
+ * @param array $studentlist The list of students and their courses
+ * @param array $teacherlist The list of teachers and their courses
+ * @param array $coursemap A map of courses and their mapped codes
  */
 function tci_export_students($exportname, $studentlist, $teacherlist, $coursemap) {
     // 1. Get enrolled users.
@@ -179,6 +193,11 @@ function tci_export_students($exportname, $studentlist, $teacherlist, $coursemap
     $writer->close();
 }
 
+/**
+ * Generates a random password with the length of $passlength
+ *
+ * @return string
+ */
 function generate_password() {
     global $passlength;
     return substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
