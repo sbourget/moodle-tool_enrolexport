@@ -18,8 +18,8 @@
 /**
  * This block generates a simple list of exports based on the users profile.
  *
- * @package   tool_enrolexport
- * @copyright 2013 Stephen Bourget
+ * @package   enrolexporter_tci
+ * @copyright 2019 Adam Yarris
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -29,11 +29,12 @@ require_once($CFG->libdir . '/formslib.php');
 /**
  * This defines the edit form for managing the exports.
  *
- * @package   tool_enrolexport
+ * @package   enrolexporter_tci
  * @copyright 2010 Stephen Bourget
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class export_edit_form extends moodleform {
+class mapping_edit_form extends moodleform {
+
     /**
      * Link ID.
      * @var int
@@ -41,22 +42,16 @@ class export_edit_form extends moodleform {
     protected $id;
 
     /**
-     * Link text to display.
-     * @var string
+     * The program code that we don't set.
+     * @var int
      */
-    protected $name = '';
+    protected $programcode = '';
 
     /**
-     * URL of web-export.
+     * A comma-separated list of course to be attached to the program code?
      * @var string
      */
-    protected $courses = '';
-
-    /**
-     * Additional notes to display.
-     * @var string
-     */
-    protected $exporter = '';
+    protected $course = '';
 
     /**
      * Constructor.
@@ -75,31 +70,19 @@ class export_edit_form extends moodleform {
         $mform =& $this->_form;
 
         // Then show the fields about where this block appears.
-        $mform->addElement('header', 'editexportheader', get_string('manageexports', 'tool_enrolexport'));
+        $mform->addElement('header', 'editexportheader', get_string('fieldmappings', 'enrolexporter_tci'));
 
-        // Name.
-        $mform->addElement('text', 'name', get_string('name', 'tool_enrolexport'), array('size' => 60));
-        $mform->setType('name', PARAM_TEXT);
-        $mform->addRule('name', null, 'required');
-        $mform->addRule('name', null, 'maxlength', 250);
+        // Program code.
+        $mform->addElement('text', 'programcode', get_string('programcode', 'enrolexporter_tci'), array('size' => 60));
+        $mform->setType('programcode', PARAM_RAW);
+        $mform->addRule('programcode', null, 'required');
+        $mform->addRule('programcode', null, 'maxlength', 64);
 
-        // Courses.
+        // Course.
         $options = array('multiple' => true, 'includefrontpage' => true);
-        $mform->addElement('course', 'courses', get_string('course'), $options);
-        $mform->setType('courses', PARAM_TEXT);
-        $mform->addRule('courses', null, 'required');
-
-        // Exporters.
-        $formats = core_component::get_plugin_list('enrolexporter');
-        $formatsbyname = array();
-        foreach ($formats as $format => $formatpath) {
-            $strformatname = get_string('pluginname', 'enrolexporter_'.$format);
-            $formatsbyname[$format] = $strformatname;
-        }
-
-        core_collator::ksort($formatsbyname);
-        $mform->addElement('select', 'exporter', get_string('exporter', 'tool_enrolexport'), $formatsbyname);
-        $mform->setType('exporter', PARAM_TEXT);
+        $mform->addElement('course', 'course', get_string('course'), $options);
+        $mform->setType('course', PARAM_TEXT);
+        $mform->addRule('course', null, 'required');
 
         // Hidden.
         $mform->addElement('hidden', 'id');

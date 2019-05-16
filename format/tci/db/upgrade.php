@@ -13,15 +13,21 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
- * Version details.
+ * Upgrade code for install
  *
  * @package    enrolexporter_tci
- * @copyright  2018 Stephen Bourget
+ * @copyright  2019 Adam Yarris
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+defined('MOODLE_INTERNAL') || die();
+/**
+ * upgrade this block instance - this function could be skipped but it will be needed later
+ * @param int $oldversion The old version of the links block
+ * @return bool
+ */
+function xmldb_enrolexporter_tci_upgrade($oldversion=0) {
+    // Finally, return result.
+    return true;
+}
 
-$string['pluginname'] = 'Oneroster 1.0 Exporter';
-$string['privacy:metadata'] = 'The Oneroster 1.0 exporter plugin does not store any personal data.';
-$string['fieldmappings'] = 'Field Mappings';

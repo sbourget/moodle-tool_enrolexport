@@ -17,8 +17,7 @@
 /**
  * This file defines tasks performed by the tool.
  *
- * @package    tool
- * @subpackage enrolexport
+ * @package    tool_enrolexport
  * @copyright  2018 Stephen Bourget
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -29,7 +28,13 @@ use core\plugininfo\base;
 
 defined('MOODLE_INTERNAL') || die();
 
-
+/**
+ * This file defines tasks performed by the tool.
+ *
+ * @package    tool_enrolexport
+ * @copyright  2018 Stephen Bourget
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class enrolexporter extends base {
     /**
      * Yes you can uninstall these plugins if you want.
@@ -50,6 +55,10 @@ class enrolexporter extends base {
     /**
      * Include the settings.php file from sub plugins if they provide it.
      * This is a copy of very similar implementations from various other subplugin areas.
+     *
+     * @param \part_of_admin_tree $adminroot The admin root
+     * @param \stdClass $parentnodename The parent node name
+     * @param boolean $hassiteconfig If the site has a config
      *
      * @return \moodle_url
      */

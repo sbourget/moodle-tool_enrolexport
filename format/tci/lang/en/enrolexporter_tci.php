@@ -25,4 +25,26 @@
 $string['pluginname'] = 'TCI Exporter';
 $string['privacy:metadata'] = 'The TCI exporter plugin does not store any personal data.';
 $string['fieldmappings'] = 'Field Mappings';
-
+$string['managemappings'] = 'Manage Mappings';
+$string['programcode'] = 'Program code';
+$string['courseids'] = 'Course IDs';
+$string['addmapping'] = 'Add Mapping';
+$string['editmapping'] = 'Edit Mapping';
+$string['studentmappings'] = 'Student Mappings';
+$string['teachermappings'] = 'Teacher Mappings';
+$string['student_firstname'] = 'First Name';
+$string['student_firstname_desc'] = 'The first name of the student.';
+$string['student_lastname'] = 'Last Name';
+$string['student_lastname_desc'] = 'The last name of the student.';
+$string['student_username'] = 'Username';
+$string['student_username_desc'] = 'The username of the student.';
+$string['student_password'] = 'Password';
+$string['student_password_desc'] = 'The password of the student, either random or the existing stored encrypted value.';
+$string['teacher_email'] = 'Email';
+$string['teacher_email_desc'] = 'The email of the teacher.';
+$string['teacher_firstname'] = 'First Name';
+$string['teacher_firstname_desc'] = 'The first name of the teacher.';
+$string['teacher_lastname'] = 'Last Name';
+$string['teacher_lastname_desc'] = 'The last name of the teacher.';
+$string['teacher_password'] = 'Password';
+$string['teacher_password_desc'] = 'The password of the student, either random or the existing stored encrypted value.';

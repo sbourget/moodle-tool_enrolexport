@@ -24,6 +24,11 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Exports data for oneroster 1.1.
+ *
+ * @param stdClass $settings The export data from the database.
+ */
 function enrolexporter_oneroster11_export($settings) {
 
 }
