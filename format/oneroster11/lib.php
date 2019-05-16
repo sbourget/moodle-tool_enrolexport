@@ -17,8 +17,7 @@
 /**
  * library of functions.
  *
- * @package    tool_enrolexport
- * @subpackage oneroster11
+ * @package    enrolexporter_oneroster11
  * @copyright  2018 Stephen Bourget
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
