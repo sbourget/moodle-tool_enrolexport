@@ -29,7 +29,7 @@ require_once($CFG->libdir . '/formslib.php');
 /**
  * This defines the edit form for managing the exports.
  *
- * @package   tool_enrolexport
+ * @package   enrolexporter_tci
  * @copyright 2010 Stephen Bourget
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
