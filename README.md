@@ -25,7 +25,6 @@ can be uploaded to an external system.  The initial plan is to support multiple
 formats including:
 
     * The TCI CSV rostering Format
-    * OneRoster 1.0 CSV
     * OneRoster 1.1 CSV
 
 Installation:
