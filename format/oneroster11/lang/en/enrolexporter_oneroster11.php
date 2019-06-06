@@ -25,4 +25,13 @@
 $string['pluginname'] = 'Oneroster 1.1 Exporter';
 $string['privacy:metadata'] = 'The Oneroster 1.1 exporter plugin does not store any personal data.';
 $string['fieldmappings'] = 'Field Mappings';
-
+$string['academicsessions_sourcedId'] = 'Academic Session ID';
+$string['academicsessions_sourcedId_desc'] = 'The unique term of the academic session';
+$string['academicsessions_title'] = 'Academic session title';
+$string['academicsessions_title_desc'] = 'The name of the academic session.';
+$string['academicsessions_header'] = 'Academic Sessions';
+$string['academicsessions_type'] = 'Type of session';
+$string['org_id'] = 'Organization Identifier';
+$string['org_id_desc'] = 'The unique code/ID number for the current organization.';
+$string['addmapping'] = 'Add Mapping';
+$string['managemappings'] = 'Manage Mappings';

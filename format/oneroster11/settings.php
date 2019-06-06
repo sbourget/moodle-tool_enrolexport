@@ -26,7 +26,17 @@ defined('MOODLE_INTERNAL') || die();
 
 
 if ($ADMIN->fulltree) {
-        // Introductory explanation.
-        $mysettings->add(new admin_setting_heading('enrolexporter/oneroster11', '',
-                new lang_string('fieldmappings', 'enrolexporter_oneroster11')));
+    // Introductory explanation.
+    $mysettings->add(new admin_setting_heading('enrolexporter/oneroster11', '',
+            new lang_string('fieldmappings', 'enrolexporter_oneroster11')));
+
+    $url = new moodle_url("/$CFG->admin/tool/enrolexport/format/oneroster11/configure.php");
+    $link = '<a href="' . $url . '">' . get_string('fieldmappings', 'enrolexporter_oneroster11') . '</a>';
+    $mysettings->add(new admin_setting_heading('toolsettingsfieldmappings', '', $link));
+
+    $mysettings->add(new admin_setting_configtext('enrolexporter_oneroster11/org_id',
+        get_string('org_id', 'enrolexporter_oneroster11'),
+        get_string('org_id_desc', 'enrolexporter_oneroster11'), '', PARAM_ALPHANUMEXT));
+
+    // TODO: Add date picker for startDate and endDate
 }

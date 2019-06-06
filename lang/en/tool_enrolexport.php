@@ -42,3 +42,4 @@ $string['pluginname'] = 'Enrolment Exporter';
 $string['pluginnamesettings'] = 'Enrolment exporter settings';
 $string['privacy:metadata'] = 'The Enrolment exporter plugin does not store any personal data.';
 $string['deleteexporterconfirm'] = 'Are you sure you want to delete the export {$a}';
+$string['exportskipped'] = 'Export Skipped';
