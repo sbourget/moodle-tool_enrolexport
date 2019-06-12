@@ -24,7 +24,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->libdir .'/spout/src/Spout/Autoloader/autoload.php');
+require_once($CFG->libdir . '/spout/src/Spout/Autoloader/autoload.php');
 
 use Box\Spout\Writer\WriterFactory;
 use Box\Spout\Common\Type;
@@ -35,6 +35,7 @@ use Box\Spout\Common\Type;
  * @param stdClass $settings The export data from the database.
  */
 function enrolexporter_oneroster11_export($settings) {
+    echo 'Oneroster';
     global $DB;
     $courses = explode(",", $settings->courses);
     $studentlist = array();
@@ -59,6 +60,13 @@ function enrolexporter_oneroster11_export($settings) {
     oneroster_export_manifest($settings->name);
     oneroster_export_classresources($settings->name);
     oneroster_export_courseresources($settings->name);
+    oneroster_export_resources($settings->name);
+    oneroster_export_academicsessions($settings->name);
+    oneroster_export_enrollments($settings->name);
+    oneroster_export_classes($settings->name);
+    oneroster_export_courses($settings->name);
+    oneroster_export_users($settings->name);
+    oneroster_export_orgs($settings->name);
 }
 
 /**
@@ -83,7 +91,7 @@ function oneroster_export_manifest($exportname) {
         ["file.resources", "absent"],
         ["file.results", "absent"],
         ["file.users", "bulk"],
-        ["source.systemName", get_string('frontpage', 'fullname')],
+        ["source.systemName", $CFG->fullname],
         ["source.systemCode", $CFG->wwwroot],
     ]);
 }
@@ -100,7 +108,8 @@ function oneroster_export_courseresources($exportname) {
 
 function oneroster_export_resources($exportname) {
     create_csv('resources', $exportname, [
-        // TODO: At the end
+        ['sourcedId', 'vendorResourceId', 'title', 'vendorId'],
+        [get_config('enrolexporter_oneroster11', 'resourcesmastercode'), get_config('enrolexporter_oneroster11', 'resourcesmastercode'), get_config('enrolexporter_oneroster11', 'title'), 'vnd.mhe']
     ]);
 }
 
@@ -112,11 +121,31 @@ function oneroster_export_academicsessions($exportname) {
 }
 
 function oneroster_export_enrollments($exportname) {
-    // TODO: This links other files together. I'll add the vales when the relative files are completed
-    create_csv('enrollments', $exportname, [
-        ['sourcedId', 'classSourcedId', 'schoolSourceId', 'userSourceId', 'role'],
-        ['', '', '', '', '']
-    ]);
+    $rows = [['sourcedId', 'classSourcedId', 'schoolSourcedId', 'userSourcedId', 'role']];
+
+    $orgId = get_config('enrolexporter_oneroster11', 'orgid');
+    $capabilityUsers = get_user_from_roles();
+
+    foreach (get_courses() as $course) {
+        foreach (groups_get_all_groups($course->id) as $class) {
+
+            foreach (groups_get_members($class->id) as $user) {
+                if ($class->idnumber !== '') {
+                    array_push($rows, ["$user->id$class->id", $class->id, $orgId, $user->id, get_capability($user, $capabilityUsers)]);
+                }
+            }
+
+        }
+    }
+
+    create_csv('enrollments', $exportname, $rows);
+}
+
+function get_capability($user, $capabilityUsers) {
+    foreach ($capabilityUsers as $specString => $users) {
+        if (in_array($user, $users)) return $specString;
+    }
+    return 'student';
 }
 
 // Each COURSE in moodle is a CLASS in OneRoster, and each GROUP in moodle is a CLASS in OneRoster
@@ -127,32 +156,74 @@ function oneroster_export_classes($exportname) {
         foreach (groups_get_all_groups($course->id) as $class) {
             if ($class->idnumber !== '') {
                 // TODO: Make NA the grade in a custom field
-                array_push($rows, [$class->id, $course->fullname . " " . $class->name, 'NA', '', get_config('enrolexporter_oneroster11', 'org_id')]);
+                array_push($rows, [$class->id, $course->fullname . " " . $class->name, 'NA', '', get_config('enrolexporter_oneroster11', 'orgid')]);
             }
         }
     }
 
-    create_csv('classes', $exportname, [
-        ['sourcedId', '']
-    ]);
+    create_csv('classes', $exportname, $rows);
 }
 
 function oneroster_export_courses($exportname) {
-    create_csv('courses', $exportname, [
-        // TODO: At the end
-    ]);
+    // From specs:
+    //   subjectCodes - Not used for MHE integration - ca be left blank, any data will be ignored
+    //   grade - If left blank, the student grade will be set to NA
+    $rows = [['sourcedId', 'title', 'grade', 'orgSourcedId', 'subjectCodes']];
+
+    foreach (get_courses() as $course) {
+        // TODO: Add options for what name should be added
+        array_push($rows, [$course->id, $course->fullname, 'NA', get_config('enrolexporter_oneroster11', 'orgid')]);
+    }
+
+    create_csv('courses', $exportname, $rows);
 }
 
 function oneroster_export_users($exportname) {
-    create_csv('users', $exportname, [
-        // TODO: At the end
-    ]);
+    // From specs:
+    //   enabledUser - This field is required per OR v1.1 specs but is not utilized by MHE
+    $rows = [['sourcedId', 'enabledUser', 'orgSourcedIds', 'role', 'username', 'givenName', 'familyName', 'email']];
+
+    $orgId = get_config('enrolexporter_oneroster11', 'orgid');
+
+    foreach (get_user_from_roles() as $specString => $users) {
+        foreach ($users as $user) {
+            array_push($rows, [$user->id, true, $orgId, $specString, $user->username, $user->firstname, $user->lastname, $user->email]);
+        }
+    }
+
+    create_csv('users', $exportname, $rows);
 }
 
 function oneroster_export_orgs($exportname) {
     create_csv('orgs', $exportname, [
-        // TODO: At the end
+        ['sourcedId', 'name', 'type'],
+        [get_config('enrolexporter_oneroster11', 'orgid'), get_config('enrolexporter_oneroster11', 'orgname'), get_config('enrolexporter_oneroster11', 'orgtype')]
     ]);
+}
+
+// Gets the string from the OR 1.1 spec and the users associated with it as an array
+function get_user_from_roles() {
+    $context = context_system::instance();
+    $users = array();
+
+    $permissionSpecMap = [
+        'includeinexportasteacher' => 'teacher',
+        'includeinexportasstudent' => 'student',
+        'includeinexportasparent' => 'parent',
+        'includeinexportasguardian' => 'guardian',
+        'includeinexportasrelative' => 'relative',
+        'includeinexportasaide' => 'aide',
+        'includeinexportasadministrator' => 'administrator',
+    ];
+    foreach ($permissionSpecMap as $permission => $specString) {
+        $roleRow = array();
+        foreach (get_enrolled_users($context, 'enrolexporter/oneroster11:' . $permission) as $user) {
+            array_push($roleRow, $user);
+        }
+        $users[$specString] = $roleRow;
+    }
+
+    return $users;
 }
 
 /**
