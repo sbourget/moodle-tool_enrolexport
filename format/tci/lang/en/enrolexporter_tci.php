@@ -48,3 +48,5 @@ $string['teacher_lastname'] = 'Last Name';
 $string['teacher_lastname_desc'] = 'The last name of the teacher.';
 $string['teacher_password'] = 'Password';
 $string['teacher_password_desc'] = 'The password of the student, either random or the existing stored encrypted value.';
+$string['tci:includeinexportasteacher'] = 'Include in export as teacher';
+$string['tci:includeinexportasstudent'] = 'Include in export as student';

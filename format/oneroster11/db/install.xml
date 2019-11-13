@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="admin/tool/enrolexport/format/oneroster11/db" VERSION="20190606" COMMENT="XMLDB file for Moodle admin/tool/enrolexport/format/oneroster11"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="enrolexporter_oneroster11" COMMENT="Data stored for OneRoster 1.1">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="course" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="A comma-separated list of course to be attached to the session?"/>
+        <FIELD NAME="academicsessions_sourcedid" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="The Unique ID for each academic session, from academicSessions.csv"/>
+        <FIELD NAME="academicsessions_title" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="The name of the academic session, from academicSessions.csv"/>
+        <FIELD NAME="academicsessions_type" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="The type of academic session, must be one of the following:
+- term
+- gradingPeriod
+- schoolYear
+- semester
+Found in academicSessions.csv"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+  </TABLES>
+</XMLDB>

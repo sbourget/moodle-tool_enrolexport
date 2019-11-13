@@ -24,12 +24,11 @@ This plugin is being designed to export course enrollment into a CSV file that
 can be uploaded to an external system.  The initial plan is to support multiple
 formats including:
 
-    * The TCI CSV rostering Format
-    * OneRoster 1.1 CSV
+- The TCI CSV rostering Format
+- [OneRoster 1.1 CSV](https://www.imsglobal.org/oneroster-v11-final-specification)
 
 Installation:
-
-    * see http://docs.moodle.org/en/Installing_contributed_modules_or_plugins
-    * This version works only with Moodle 3.5 or Later
+- see http://docs.moodle.org/en/Installing_contributed_modules_or_plugins
+- This version works only with Moodle 3.5 or Later
 
 Pull requests are welcome!

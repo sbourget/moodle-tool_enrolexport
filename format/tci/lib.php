@@ -110,11 +110,11 @@ function tci_export_teachers($exportname, $teacherlist, $coursemap) {
             )[get_config('enrolexporter_tci', 'teacher_lastname')];
 
             $password = array(
-                'random' => generate_password(),
-                'id_username' => $teacher->idnumber + $teacher->username,
-                'id_email' => $teacher->idnumber + $teacher->email,
-                'id_firstname' => $teacher->idnumber + $teacher->firstname,
-                'id_lastname' => $teacher->idnumber + $teacher->lastname
+                'random' => tci_generate_password(),
+                'id_username' => "$$teacher->idnumber$teacher->username",
+                'id_email' => "$teacher->idnumber$teacher->email",
+                'id_firstname' => "$teacher->idnumber$teacher->firstname",
+                'id_lastname' => "$teacher->idnumber$teacher->lastname"
             )[get_config('enrolexporter_tci', 'teacher_password')];
 
             $writer->addRow([$email, $firstname, $lastname, $password, $teacher->confirmed, $programcode]);
@@ -134,6 +134,8 @@ function tci_export_teachers($exportname, $teacherlist, $coursemap) {
  * @param array $coursemap A map of courses and their mapped codes
  */
 function tci_export_students($exportname, $studentlist, $teacherlist, $coursemap) {
+    $context = context_system::instance();
+
     // 1. Get enrolled users.
     // 2. Extract students.
     // 3. Create CSV.
@@ -150,8 +152,10 @@ function tci_export_students($exportname, $studentlist, $teacherlist, $coursemap
 
     foreach ($studentlist as $courseid => $students) {
         $teachervalues = array_values($teacherlist[$courseid]);
-        if (count($teacherlist[$courseid]) == 0) {
-            // TODO: Add logging course skipped.
+        if (sizeof($teacherlist[$courseid]) == 0) {
+            $params = array('context' => $context, 'courseid' => $courseid);
+            $event = \tool_enrolexport\event\export_skipped::create($params);
+            $event->trigger();
             continue;
         }
 
@@ -178,11 +182,11 @@ function tci_export_students($exportname, $studentlist, $teacherlist, $coursemap
             )[get_config('enrolexporter_tci', 'student_username')];
 
             $password = array(
-                'random' => generate_password(),
-                'id_username' => $student->idnumber + $student->username,
-                'id_email' => $student->idnumber + $student->email,
-                'id_firstname' => $student->idnumber + $student->firstname,
-                'id_lastname' => $student->idnumber + $student->lastname
+                'random' => tci_generate_password(),
+                'id_username' => "$student->idnumber$student->username",
+                'id_email' => "$student->idnumber$student->email",
+                'id_firstname' => "$student->idnumber$student->firstname",
+                'id_lastname' => "$student->idnumber$student->lastname"
             )[get_config('enrolexporter_tci', 'student_password')];
 
             $writer->addRow([$firstname, $lastname, $username, $password,
@@ -198,7 +202,7 @@ function tci_export_students($exportname, $studentlist, $teacherlist, $coursemap
  *
  * @return string
  */
-function generate_password() {
+function tci_generate_password() {
     global $passlength;
     return substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
         ceil($passlength / strlen($x)))), 1, $passlength);
