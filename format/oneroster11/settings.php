@@ -65,5 +65,5 @@ if ($ADMIN->fulltree) {
         get_string('resourcestitle', 'enrolexporter_oneroster11'),
         get_string('resourcestitle_desc', 'enrolexporter_oneroster11'), '', PARAM_ALPHANUMEXT));
 
-    // TODO: Add date picker for startDate and endDate
+    // TODO: Add date picker for startDate and endDate.
 }

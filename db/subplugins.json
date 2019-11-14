@@ -1,0 +1,5 @@
+{
+    "plugintypes": {
+        "enrolexporter": "admin\/tool\/enrolexport\/format"
+    }
+}

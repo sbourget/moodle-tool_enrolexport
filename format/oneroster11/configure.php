@@ -103,8 +103,11 @@ foreach ($rs as $index => $exporter) {
 
     $icons = $editaction . ' ' . $deleteaction;
 
-    $table->add_data(array(tool_enrolexport_courselist($exporter->course), $exporter->academicsessions_sourcedid, $exporter->academicsessions_title, $exporter->academicsessions_type,
-                               $icons));
+    $table->add_data(array(tool_enrolexport_courselist($exporter->course),
+        $exporter->academicsessions_sourcedid,
+        $exporter->academicsessions_title,
+        $exporter->academicsessions_type,
+        $icons));
 }
 
 $table->print_html();

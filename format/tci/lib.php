@@ -152,7 +152,7 @@ function tci_export_students($exportname, $studentlist, $teacherlist, $coursemap
 
     foreach ($studentlist as $courseid => $students) {
         $teachervalues = array_values($teacherlist[$courseid]);
-        if (sizeof($teacherlist[$courseid]) == 0) {
+        if (count($teacherlist[$courseid]) == 0) {
             $params = array('context' => $context, 'courseid' => $courseid);
             $event = \tool_enrolexport\event\export_skipped::create($params);
             $event->trigger();
