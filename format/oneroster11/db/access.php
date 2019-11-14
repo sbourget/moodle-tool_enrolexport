@@ -17,7 +17,7 @@
 /**
  * Access control.
  *
- * @package    enrolexporter_tci
+ * @package    enrolexporter_oneroster11
  * @copyright  2018 Stephen Bourget
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

@@ -70,8 +70,9 @@ function enrolexporter_oneroster11_export($settings) {
 }
 
 /**
- * This file builds and exports the teachers.
- * The teacher file needs: Email, Firstname, Lastname, password, password confirm, programcode.
+ * Manifest file for export
+ * @global global $CFG
+ * @param string $exportname
  */
 function oneroster_export_manifest($exportname) {
     global $CFG;
@@ -96,16 +97,28 @@ function oneroster_export_manifest($exportname) {
     ]);
 }
 
+/**
+ * classresourses file in Oneroster 1.1 Specification
+ * @param string $exportname
+ */
 function oneroster_export_classresources($exportname) {
     // TODO: Optional.
     create_csv('classResources', $exportname, [[]]);
 }
 
+/**
+ * courseresources file in Oneroster 1.1 Specification
+ * @param string $exportname
+ */
 function oneroster_export_courseresources($exportname) {
     // TODO: Optional.
     create_csv('courseResources', $exportname, [[]]);
 }
 
+/**
+ * resource file in Oneroster 1.1 Specification
+ * @param string $exportname
+ */
 function oneroster_export_resources($exportname) {
     create_csv('resources', $exportname, [
         ['sourcedId', 'vendorResourceId', 'title', 'vendorId'],
@@ -116,6 +129,10 @@ function oneroster_export_resources($exportname) {
     ]);
 }
 
+/**
+ * academicsessions file in Oneroster 1.1 Specification
+ * @param string $exportname
+ */
 function oneroster_export_academicsessions($exportname) {
     create_csv('academicSessions', $exportname, [
         ['sourcedId', 'title', 'type', 'startDate', 'endDate', 'schoolyear'],
@@ -128,6 +145,10 @@ function oneroster_export_academicsessions($exportname) {
     ]);
 }
 
+/**
+ * Enrollment file for Oneroster 1.1 Specification
+ * @param string $exportname
+ */
 function oneroster_export_enrollments($exportname) {
     $rows = [['sourcedId', 'classSourcedId', 'schoolSourcedId', 'userSourcedId', 'role']];
 
@@ -140,7 +161,7 @@ function oneroster_export_enrollments($exportname) {
             foreach (groups_get_members($class->id) as $user) {
                 if ($class->idnumber !== '') {
                     array_push($rows, ["$user->id$class->id", $class->id,
-                        $orgid, $user->id, get_capability($user, $capabilityusers)]);
+                        $orgid, $user->id, oneroster_get_capability($user, $capabilityusers)]);
                 }
             }
 
@@ -150,14 +171,25 @@ function oneroster_export_enrollments($exportname) {
     create_csv('enrollments', $exportname, $rows);
 }
 
-function get_capability($user, $capabilityusers) {
+/**
+ * Helper function to get capability
+ * @param class $user
+ * @param array $capabilityusers
+ * @return string\
+ */
+function oneroster_get_capability($user, $capabilityusers) {
     foreach ($capabilityusers as $specstring => $users) {
-        if (in_array($user, $users)) return $specstring;
+        if (in_array($user, $users)) {
+            return $specstring;
+        }
     }
     return 'student';
 }
 
-// Each COURSE in moodle is a CLASS in OneRoster, and each GROUP in moodle is a CLASS in OneRoster.
+/**
+ * Each COURSE in moodle is a CLASS in OneRoster, and each GROUP in moodle is a CLASS in OneRoster.
+ * @param string $exportname]
+ */
 function oneroster_export_classes($exportname) {
     $rows = [['sourcedId', 'title', 'grade', 'courseSourceId', 'classType', 'schoolSourcedId', 'termSourcedId']];
 
@@ -174,35 +206,45 @@ function oneroster_export_classes($exportname) {
     create_csv('classes', $exportname, $rows);
 }
 
+/**
+ * Helper function export courses.
+ * @param string $exportname
+ * From specs:
+ *   subjectCodes - Not used for MHE integration - ca be left blank, any data will be ignored.
+ *   grade - If left blank, the student grade will be set to NA.
+ */
 function oneroster_export_courses($exportname) {
-    /* 
-     * From specs:
-     *   subjectCodes - Not used for MHE integration - ca be left blank, any data will be ignored.
-     *   grade - If left blank, the student grade will be set to NA.
-     */
 
     $rows = [['sourcedId', 'title', 'grade', 'orgSourcedId', 'subjectCodes']];
 
     foreach (get_courses() as $course) {
-        // TODO: Add options for what name should be added
+        // TODO: Add options for what name should be added.
         array_push($rows, [$course->id, $course->fullname, 'NA', get_config('enrolexporter_oneroster11', 'orgid')]);
     }
 
     create_csv('courses', $exportname, $rows);
 }
 
+/**
+ * Helper function export users.
+ * @param string $exportname
+ * From specs:
+ *   enabledUser - This field is required per OR v1.1 specs but is not utilized by MHE.
+ */
 function oneroster_export_users($exportname) {
-    /* 
-     * From specs:
-     *   enabledUser - This field is required per OR v1.1 specs but is not utilized by MHE.
-     */
-
     $rows = [['sourcedId', 'enabledUser', 'orgSourcedIds', 'role', 'username', 'givenName', 'familyName', 'email']];
     $orgid = get_config('enrolexporter_oneroster11', 'orgid');
 
     foreach (get_user_from_roles() as $specstring => $users) {
         foreach ($users as $user) {
-            array_push($rows, [$user->id, true, $orgid, $specstring, $user->username, $user->firstname, $user->lastname, $user->email]);
+            array_push($rows, [$user->id,
+                true,
+                $orgid,
+                $specstring,
+                $user->username,
+                $user->firstname,
+                $user->lastname,
+                $user->email]);
         }
     }
 
@@ -233,11 +275,11 @@ function get_user_from_roles() {
         'includeinexportasadministrator' => 'administrator',
     ];
     foreach ($permissionspecmap as $permission => $specstring) {
-        $roleRow = array();
+        $rolerow = array();
         foreach (get_enrolled_users($context, 'enrolexporter/oneroster11:' . $permission) as $user) {
-            array_push($roleRow, $user);
+            array_push($rolerow, $user);
         }
-        $users[$specstring] = $roleRow;
+        $users[$specstring] = $rolerow;
     }
 
     return $users;
